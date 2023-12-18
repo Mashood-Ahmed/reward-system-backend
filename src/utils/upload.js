@@ -18,7 +18,7 @@ const uploadFileToS3 = (filename, imageBuffer) => {
     }
 
     const uploadParams = {
-      Bucket: "reward-system-media-files",
+      Bucket: "reward-system",
       Key: filename,
       Body: imageBuffer,
     };
