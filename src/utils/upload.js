@@ -8,7 +8,10 @@ aws.config.update({
   secretAccessKey: process.env.AWS_SECRET_KEY,
 });
 
-const s3 = new aws.S3();
+const s3 = new aws.S3({
+  params: {Bucket: "reward-system-1998"},
+  region: "ap-southeast-1"
+});
 
 const uploadFileToS3 = (filename, imageBuffer) => {
   return new Promise((resolve, reject) => {
@@ -29,7 +32,12 @@ const uploadFileToS3 = (filename, imageBuffer) => {
       } else {
         resolve(data.Location); // Return the S3 object URL
       }
-    });
+    })
+    .on("httpUploadProgress", (evt) => {
+      console.log(
+        "Uploading " + parseInt((evt.loaded * 100) / evt.total) + "%"
+      );
+    })
   });
 };
 
