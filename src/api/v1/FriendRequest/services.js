@@ -13,7 +13,7 @@ const get_friend_requests_by_sender = async (user_id) => {
 
 const get_friend_requests_by_user = async (user_id) => {
   const requests = await FriendRequest.findAll({
-    where: { request_to: user_id },
+    where: { request_to: user_id, status: "Pending" },
     include: [
       {
         model: User,

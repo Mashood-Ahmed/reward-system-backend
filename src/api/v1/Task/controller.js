@@ -133,7 +133,7 @@ const createTask = asyncHandler(async (req, res) => {
       JSON.parse(tags),
       req.files ? req.files : null,
       JSON.parse(assigned_to),
-      group_id,
+      group_id || null,
       req.user.id
     );
 
