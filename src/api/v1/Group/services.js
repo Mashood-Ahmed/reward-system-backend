@@ -79,7 +79,7 @@ const delete_group = async (group_id) => {
     where: { id: group_id },
   });
 
-  if(deleted_group){
+  if(deleteGroup){
     const delete_members = await GroupUser.destroy({where: {group_id: group_id}});
   }
   return deleteGroup;

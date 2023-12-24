@@ -16,10 +16,10 @@ const upload = multer({
 
 const router = express.Router();
 
-router.get("/app", isAuth, getUsersByApp);
-router.get("/:id", isAuth, getUserById);
-router.put("/pfp", isAuth, upload.single("image"), uploadProfilePicture);
-router.put("/", isAuth, updateUserById);
-router.delete("/:id", isAuth, admin, deleteUserById);
+router.get("/app", getUsersByApp);
+router.get("/:id", getUserById);
+router.put("/pfp", upload.single("image"), uploadProfilePicture);
+router.put("/", updateUserById);
+router.delete("/:id", admin, deleteUserById);
 
 export default router;

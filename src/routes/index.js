@@ -22,7 +22,7 @@ router.get("/", (req, res) => res.send("API Running"));
 router.post("/login", login);
 router.post("/register", signup);
 
-router.use("/user", userRoutes);
+router.use("/user", isAuth, userRoutes);
 router.use("/group", isAuth, groupRoutes);
 router.use("/groupuser", isAuth, groupUserRoutes);
 router.use("/task", isAuth, taskRoutes);

@@ -21,7 +21,7 @@ const get_friends_by_user = async (user_id) => {
     ],
   });
 
-  console.log(friends);
+  // console.log(friends);
 
   return friends;
 };

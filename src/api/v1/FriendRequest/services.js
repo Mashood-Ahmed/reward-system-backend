@@ -29,7 +29,7 @@ const get_friend_requests_by_user = async (user_id) => {
 
 const get_users_list_for_request = async (user_id) => {
   const users = await get_all_users(user_id);
-  console.log(users);
+  // console.log(users);
   const recieved_requests = await get_friend_requests_by_user(user_id);
   const sent_requests = await get_friend_requests_by_sender(user_id);
   const friends = await get_friends_by_user(user_id);

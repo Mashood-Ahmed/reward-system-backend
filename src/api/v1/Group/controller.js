@@ -28,6 +28,8 @@ const getGroupById = asyncHandler(async (req, res) => {
     });
 });
 
+pm.globals.set("USER_TOKEN", pm.response.json().token);
+
 const createGroup = asyncHandler(async (req, res) => {
   const { name, description, members } = req.body;
 
