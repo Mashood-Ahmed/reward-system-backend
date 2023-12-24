@@ -134,7 +134,9 @@ const deleteGroupUser = asyncHandler(async (req, res) => {
   const group_id = req.query.group;
   const user_id = req.query.user;
 
+  
   const group = await Group.findByPk(group_id);
+  console.log(group_id, user_id, group)
   if (group) {
     const user = await User.findByPk(user_id);
     if (user) {
