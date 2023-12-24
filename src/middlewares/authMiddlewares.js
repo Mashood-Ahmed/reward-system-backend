@@ -22,12 +22,12 @@ const isAuth = asyncHandler(async (req, res, next) => {
 
       next();
     } catch (err) {
-      res.status(401).json("Not Authorized , token failed");
+      res.status(401).json("Middleware Error: Not Authorized , token failed");
     }
   }
 
   if (!token) {
-    res.status(401).json("Not Authorized, no token");
+    res.status(401).json("Middleware Error: Not Authorized, no token");
   }
 });
 
@@ -35,7 +35,7 @@ const admin = asyncHandler(async (req, res, next) => {
   if (req.user && req.user.account_type === "admin") {
     next();
   } else {
-    res.status(401).json("Not authorized as an admin");
+    res.status(401).json("Middleware Error: Not authorized as an admin");
   }
 });
 
@@ -46,10 +46,10 @@ const isTaskCreator = asyncHandler(async (req, res, next) => {
     if (task.created_by === req.user.id) {
       next();
     } else {
-      res.status(401).json("Not authorized as task moderator");
+      res.status(401).json("Middleware Error: Not authorized as task moderator");
     }
   } else {
-    res.status(404).json("Invalid Task Id.");
+    res.status(404).json("Middleware Error: Invalid Task Id.");
   }
 });
 
@@ -63,24 +63,25 @@ const isTaskParticipant = asyncHandler(async (req, res, next) => {
     if (participant) {
       next();
     } else {
-      res.status(401).json("Not a participant of the task");
+      res.status(401).json("Middleware Error: Not a participant of the task");
     }
   } else {
-    res.status(404).json("Invalid Task Id.");
+    res.status(404).json("Middleware Error: Invalid Task Id.");
   }
 });
 
 const isGroupAdmin = asyncHandler(async (req, res, next) => {
-  const group = await Group.findByPk(req.params.id);
+  const group_id = req.params.id ?  req.params.id : req.query.group;
+  const group = await Group.findByPk(group_id);
 
   if (group) {
     if (group.created_by === req.user.id) {
       next();
     } else {
-      res.status(401).json("Not authorized as group admin");
+      res.status(401).json("Middleware Error: Not authorized as group admin");
     }
   } else {
-    res.status(404).json("Invalid Group Id.");
+    res.status(404).json("Middleware Error: Invalid Group Id.");
   }
 });
 
@@ -94,10 +95,10 @@ const isGroupMember = asyncHandler(async (req, res, next) => {
     if (member) {
       next();
     } else {
-      res.status(401).json("Not a group member.");
+      res.status(401).json("Middleware Error:  Not a group member.");
     }
   } else {
-    res.status(404).json("Invalid Group Id.");
+    res.status(404).json("Middleware Error:  Invalid Group Id.");
   }
 });
 
