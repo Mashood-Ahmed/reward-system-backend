@@ -7,12 +7,12 @@ import {
   createGroupAdmin,
   deleteGroupAdmin,
 } from "./controller.js";
-import { isGroupAdmin } from "../../../middlewares/authMiddlewares.js";
+import { isAuth, isGroupAdmin, isGroupMember } from "../../../middlewares/authMiddlewares.js";
 
 const router = express.Router();
 
-router.get("/mygroups", getGroupsByUser);
-router.get("/members/:id", getGroupMemebers);
+router.get("/mygroups", isAuth, getGroupsByUser);
+router.get("/members/:id", isAuth, isGroupMember, getGroupMemebers);
 
 router.post("/add/", createGroupUser);
 router.put("/admin/add/:id", isGroupAdmin, createGroupAdmin);
