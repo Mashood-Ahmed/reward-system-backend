@@ -3,6 +3,7 @@ import { Group } from "./Group.js";
 import moment from "moment";
 import { uploadFileToS3 } from "../../../utils/upload.js";
 import { create_group_members } from "../GroupUser/services.js";
+import { GroupUser } from "../GroupUser/GroupUser.js";
 
 const get_group_by_id = async (group_id) => {
   const groups = await Group.findByPk(group_id);
@@ -77,6 +78,10 @@ const delete_group = async (group_id) => {
   const deleteGroup = await Group.destroy({
     where: { id: group_id },
   });
+
+  if(deleted_group){
+    const delete_members = await GroupUser.destroy({where: {group_id: group_id}});
+  }
   return deleteGroup;
 };
 
