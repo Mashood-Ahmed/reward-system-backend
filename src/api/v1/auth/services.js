@@ -30,6 +30,7 @@ const registerUser = async (
       full_name: user.full_name,
       gender: user.gender,
       password: user.password,
+      profile_picture: user.profile_picture_url,
       account_type: user.account_type,
       wallet: wallet,
       token: generateToken(user.id),
@@ -49,6 +50,7 @@ const loginUser = asyncHandler(async (email, password) => {
         id: user.id,
         full_name: user.full_name,
         email: user.email,
+        profile_picture: user.profile_picture_url,
         account_type: user.account_type,
         token: generateToken(user.id),
       };
