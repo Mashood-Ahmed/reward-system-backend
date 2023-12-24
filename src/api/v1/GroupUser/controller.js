@@ -43,9 +43,9 @@ const getGroupMemebers = asyncHandler(async (req, res) => {
 const createGroupUser = asyncHandler(async (req, res) => {
   const { user_id, group_id } = req.body;
 
-  const group = Group.findByPk(group_id);
+  const group = await Group.findByPk(group_id);
   if (group) {
-    const user = User.findByPk(user_id);
+    const user = await User.findByPk(user_id);
     if (user) {
       const groupMembers = await get_group_members(group_id);
       groupMembers.forEach((member) => {
@@ -75,9 +75,9 @@ const createGroupAdmin = asyncHandler(async (req, res) => {
   const group_id = req.params.id;
   const { user_id } = req.body;
 
-  const group = Group.findByPk(group_id);
+  const group = await Group.findByPk(group_id);
   if (group) {
-    const user = GroupUser.findOne({
+    const user = await GroupUser.findOne({
       where: { group_id: group_id, user_id: user_id },
     });
     if (user) {
@@ -105,9 +105,9 @@ const deleteGroupAdmin = asyncHandler(async (req, res) => {
   const group_id = req.params.id;
   const { user_id } = req.body;
 
-  const group = Group.findByPk(group_id);
+  const group = await Group.findByPk(group_id);
   if (group) {
-    const user = GroupUser.findOne({
+    const user = await GroupUser.findOne({
       where: { user_id: user_id, group_id: group.id },
     });
     if (user) {
@@ -134,9 +134,9 @@ const deleteGroupUser = asyncHandler(async (req, res) => {
   const group_id = req.query.group;
   const user_id = req.query.user;
 
-  const group = Group.findByPk(group_id);
+  const group = await Group.findByPk(group_id);
   if (group) {
-    const user = User.findByPk(user_id);
+    const user = await User.findByPk(user_id);
     if (user) {
       await delete_group_user(user_id, group_id)
         .then(() => {
