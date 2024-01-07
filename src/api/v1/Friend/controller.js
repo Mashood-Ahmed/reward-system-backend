@@ -5,6 +5,7 @@ import {
   remove_friend_by_id,
 } from "./services.js";
 import { User } from "../User/User.js";
+import { Friend } from "./Friend.js";
 
 const getFriendsByUser = asyncHandler(async (req, res) => {
   try {

@@ -1,8 +1,11 @@
 import { User } from "./User.js";
+import { Task } from "../Task/Task.js";
 
 import { uploadFileToS3 } from "../../../utils/upload.js";
 import moment from "moment/moment.js";
 import { Op } from "sequelize";
+import { TaskParticipant } from "../TaskParticipant/TaskParticipant.js";
+import { Friend } from "../Friend/Friend.js";
 
 const get_all_users = async (user_id) => {
   const users = await User.findAll({ where: { [Op.not]: { id: user_id } } });
@@ -10,12 +13,35 @@ const get_all_users = async (user_id) => {
 };
 
 const get_user = async (user_id) => {
-  const users = await User.findByPk(user_id, {
+  const user = await User.findByPk(user_id, {
     attributes: {
       exclude: ["password", "createdAt", "updatedAt"],
     },
   });
-  return users;
+  if(user){
+    const taskModerated = await Task.count({
+      where: { created_by: user_id },
+    });
+  
+    const taskCompleted = await TaskParticipant.count({
+      where: { user_id: user_id },
+    });
+
+    const friends = await Friend.count({
+      where: {[Op.or] : {user1: user_id, user2: user_id}}
+    })
+
+    const total_tasks = taskModerated+taskCompleted || 0;
+    
+    return {
+      user: user,
+      total_tasks_count: total_tasks,
+      friends_count: friends,
+    }
+
+  }else{
+    return Error("Invalid User Id.")
+  }
 };
 
 const upload_profile_picture = async (attachment, user_id) => {
