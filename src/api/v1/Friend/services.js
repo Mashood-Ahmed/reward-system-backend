@@ -46,9 +46,9 @@ const create_friend = async (user1, user2) => {
   return friends;
 };
 
-const remove_friend_by_id = async (user1_id, user2_id) => {
+const remove_friend_by_id = async (friend_id) => {
   const exfriend = await Friend.destroy({
-    where: { [Op.or]: { user1: user1_id, user2: user2_id } },
+    where: { id: friend_id },
   });
 
   return exfriend;

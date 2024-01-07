@@ -30,18 +30,18 @@ const getMutualFriendsByUser = asyncHandler(async (req, res) => {
 });
 
 const removeFriend = asyncHandler(async (req, res) => {
-  const user = await User.findByPk(req.params.id);
-  if (user) {
+  const friend = await Friend.findByPk(req.params.id);
+  if (friend) {
     try {
-      const exFriends = await remove_friend_by_id(req.user.id, user.id);
+      const exFriends = await remove_friend_by_id(friend.id);
       if (exFriends) {
-        res.json("User Unfriend.");
+        res.json("User Unfriended.");
       }
     } catch (error) {
       return res.status(500).json(error.message);
     }
   } else {
-    res.status(404).json("Invalid User Id. User not found.");
+    res.status(404).json("Invalid Friend Id. Friend not found.");
   }
 });
 

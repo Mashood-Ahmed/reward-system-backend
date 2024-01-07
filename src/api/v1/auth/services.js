@@ -52,6 +52,7 @@ const loginUser = asyncHandler(async (email, password) => {
         email: user.email,
         profile_picture: user.profile_picture_url,
         account_type: user.account_type,
+        bio: user.bio,
         token: generateToken(user.id),
       };
       return userInfo;
