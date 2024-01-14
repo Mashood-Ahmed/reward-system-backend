@@ -16,7 +16,7 @@ const get_task_by_id = async (task_id) => {
 const get_task_by_group_id = async (group_id) => {
   const tasks = await Task.findAll({
     where: { group_id: group_id },
-    include: [{model: User, attributes: ["id", "full_name", " profile_picture_url"]}],
+    include: [{model: User, attributes: ["id", "full_name", "profile_picture_url"]}],
     order: [["createdAt", "ASC"]],
   });
   return tasks;
