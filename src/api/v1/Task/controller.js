@@ -122,6 +122,8 @@ const createTask = asyncHandler(async (req, res) => {
     group_id,
   } = req.body;
 
+  console.log("$$$$$$$$$$$$$$$$$$$$", reward)
+
   try {
     const task = await create_task(
       title,

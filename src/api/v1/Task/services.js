@@ -82,7 +82,6 @@ const create_task = async (
   created_by
 ) => {
   try {
-    const rewardInt = parseInt(reward);
     const newTask = await Task.create({
       title,
       description,
@@ -90,7 +89,7 @@ const create_task = async (
       end_date,
       start_time,
       end_time,
-      rewardInt,
+      reward,
       tags,
       assigned_to,
       group_id,
