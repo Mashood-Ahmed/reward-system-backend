@@ -22,6 +22,7 @@ import { Group } from "../Group/Group.js";
 
 import { create_transaction } from "../Transaction/services.js";
 import { TaskParticipant } from "../TaskParticipant/TaskParticipant.js";
+import recordPayment from "../../../utils/web3.js";
 
 const logger = pino();
 
@@ -129,7 +130,7 @@ const createTask = asyncHandler(async (req, res) => {
       end_date,
       start_time,
       end_time,
-      reward,
+      parseInt(reward),
       JSON.parse(tags),
       req.files ? req.files : null,
       JSON.parse(assigned_to),
@@ -241,35 +242,43 @@ const closeTask = asyncHandler(async (req, res) => {
 
 const rewardTask = asyncHandler(async (req, res) => {
   const task_id = req.params.id;
-  const { user_id } = req.body;
+  const { transaction_id, user_id } = req.body;
 
   const task = await Task.findByPk(task_id);
 
   if (task) {
-    const data = { status: "Rewarded" };
-    try {
-      const reward = create_transaction(
-        task.reward,
-        "Debit",
-        user_id,
-        req.user.id
-      );
-      const participants = update_task_participant(
-        data,
-        user_id,
-        req.params.id
-      );
+    if(transaction_id){
+      const data = { status: "Rewarded" };
+      try {
+        const blockchain = await recordPayment(user_id, task.reward, task_id, transaction_id);
 
-      logger.info(
-        "Task " + task.id + " rewarded to " + user_id + " by " + req.user.id
-      );
-      res.status(200).json({
-        reward: reward,
-        participant: participants[1],
-      });
-    } catch (error) {
-      logger.info("Task rewarding error: " + task_id + req.user.id);
-      res.status(500).json({ error: error.message });
+        const reward = await create_transaction(
+          task.reward,
+          "Debit",
+          user_id,
+          req.user.id
+        );
+        const participants = await update_task_participant(
+          data,
+          user_id,
+          req.params.id
+        );
+  
+        logger.info(
+          "Task " + task.id + " rewarded to " + user_id + " by " + req.user.id
+        );
+        res.status(200).json({
+          blockchain_response: blockchain,
+          reward: reward,
+          participant: participants[1],
+        });
+      } catch (error) {
+        logger.info("Task rewarding error: " + task_id + req.user.id);
+        res.status(500).json({ error: error.message });
+      }
+
+    }else{
+      res.status(404).json({ error: "Transaction Id Not Found." });
     }
   } else {
     res.status(404).json({ error: "Invalid Task Id." });

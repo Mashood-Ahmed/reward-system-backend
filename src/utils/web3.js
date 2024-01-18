@@ -179,3 +179,5 @@ const recordPayment = async (payer,amount,description,transactionId) => {
 
       return result
 }
+
+export default recordPayment
