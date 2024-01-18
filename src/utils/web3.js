@@ -1,4 +1,4 @@
-const Web3 = require('web3')
+import Web3 from "web3"
 
 // Configure web3 to connect to the Sepolia testnet
 const web3 = new Web3('https://eth-sepolia.g.alchemy.com/v2/0PehriR-bczOTDONtVmXdZmZP4cXn7mt'); // Replace with the actual Sepolia testnet URL
