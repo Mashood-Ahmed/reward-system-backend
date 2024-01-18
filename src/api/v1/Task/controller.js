@@ -129,7 +129,7 @@ const createTask = asyncHandler(async (req, res) => {
       end_date,
       start_time,
       end_time,
-      reward || 0,
+      reward,
       JSON.parse(tags),
       req.files ? req.files : null,
       JSON.parse(assigned_to),
