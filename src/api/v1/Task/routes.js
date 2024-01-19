@@ -60,7 +60,7 @@ router.put("/approve/:id", isAuth, isTaskCreator, approveTask);
 router.put("/reward/:id", isAuth, isTaskCreator, rewardTask);
 router.put("/close/:id", isAuth, isTaskCreator, closeTask);
 
-router.get("/participant/:id", getTaskParticipantByUser);
+router.get("/participant/:id", isAuth, getTaskParticipantByUser);
 router.get("/participants/:id", getTaskParticipantByTask);
 router.post("/participant/:id", isAuth, isTaskCreator, addTaskParticipant);
 router.delete("/participant/:id", isAuth, isTaskCreator, removeTaskParticipant);
