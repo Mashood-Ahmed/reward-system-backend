@@ -4,6 +4,16 @@ import { uploadFileToS3 } from "../../../utils/upload.js";
 import { Task } from "../Task/Task.js";
 import { User } from "../User/User.js";
 
+const get_task_participants_by_user_id = async (task_id, user_id) => {
+  const participants = await TaskParticipant.findAll({
+    where: { task_id: task_id, user_id: user_id },
+    include: [
+      { model: Task },
+    ],
+  });
+  return participants;
+};
+
 const get_task_participants_by_task = async (task_id) => {
   const participants = await TaskParticipant.findAll({
     where: { task_id: task_id },
@@ -93,6 +103,7 @@ const remove_task_participant = async (participant_id) => {
 
 export {
   get_task_participants_by_task,
+  get_task_participants_by_user_id,
   get_tasks_by_participants,
   add_task_participant,
   create_task_participants,

@@ -4,9 +4,25 @@ import { Task } from "../Task/Task.js";
 import {
   add_task_participant,
   get_task_participants_by_task,
+  get_task_participants_by_user_id,
   remove_task_participant,
 } from "./service.js";
 import { TaskParticipant } from "./TaskParticipant.js";
+
+const getTaskParticipantByUser = asyncHandler(async (req, res) => {
+  const task = await Task.findByPk(req.params.id);
+  if (task) {
+    await get_task_participants_by_user_id(task.id, req.user.id)
+      .then((participant) => {
+        res.json(participant);
+      })
+      .catch((err) => {
+        res.status(500).json(err.message);
+      });
+  } else {
+    res.status(404).json("Invalid Task Id. Task not found.");
+  }
+});
 
 const getTaskParticipantByTask = asyncHandler(async (req, res) => {
   const task = await Task.findByPk(req.params.id);
@@ -60,4 +76,4 @@ const removeTaskParticipant = asyncHandler(async (req, res) => {
   }
 });
 
-export { getTaskParticipantByTask, addTaskParticipant, removeTaskParticipant };
+export { getTaskParticipantByUser, getTaskParticipantByTask, addTaskParticipant, removeTaskParticipant };
