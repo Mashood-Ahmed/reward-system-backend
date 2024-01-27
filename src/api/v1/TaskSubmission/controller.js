@@ -110,7 +110,7 @@ const removeTaskSubmission = asyncHandler(async (req, res) => {
   const task = await Task.findByPk(req.params.id);
   const submission = await TaskSubmission.findByPk(req.query.submissionId);
   if (task && submission) {
-    await delete_submission(task_id, req.user.id, submission.id)
+    await delete_submission(task.id, req.user.id, submission.id)
       .then((result) => {
         res.status(200).json({result: result, msg: "Submission Removed Successfully"});
       })
