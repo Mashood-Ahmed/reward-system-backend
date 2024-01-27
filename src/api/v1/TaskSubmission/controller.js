@@ -107,17 +107,18 @@ const addTaskSubmission = asyncHandler(async (req, res) => {
 });
 
 const removeTaskSubmission = asyncHandler(async (req, res) => {
+  const task = await Task.findByPk(req.params.id);
   const submission = await TaskSubmission.findByPk(req.query.submissionId);
-  if (submission) {
-    await delete_submission(submission.id)
-      .then(() => {
-        res.status(200).json("Task Submission Removed Succesfully");
+  if (task && submission) {
+    await delete_submission(task_id, req.user.id, submission.id)
+      .then((result) => {
+        res.status(200).json({result: result, msg: "Submission Removed Successfully"});
       })
       .catch((err) => {
         res.status(500).json(err.message);
       });
   } else {
-    res.status(404).json("Invalid Task Id. Task not found.");
+    res.status(404).json("Invalid Task or Submission Id. Task or Submission not found.");
   }
 });
 

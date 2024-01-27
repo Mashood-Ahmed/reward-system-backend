@@ -42,7 +42,7 @@ const get_task_stats_by_user = async (user_id) => {
 
   const rewardsEarned = await TaskParticipant.findAll({
     attributes: ["id"],
-    where: { user_id: user_id, status: "Approved" },
+    where: { user_id: user_id, status: "Rewarded" },
     include: {
       model: Task,
       attributes: ["reward"],

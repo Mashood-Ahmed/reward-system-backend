@@ -160,7 +160,7 @@ const add_task_submission = async (submission, user_id, task_id) => {
 //   }
 // };
 
-const delete_submission = async (submission_id) => {
+const delete_submission = async (task_id, user_id, submission_id) => {
   try {
     const submission = await TaskSubmission.findByPk(submission_id);
     const s3_removed = deleteFileFromS3(submission.url);
@@ -170,7 +170,22 @@ const delete_submission = async (submission_id) => {
         where: { id: submission.id },
       });
     }
-    return removed_submission;
+
+    let updated_status;
+
+    if(removed_submission){
+      const submission_count = await TaskSubmission.count({where: {task_id: task_id, user_id: user_id}});
+      
+      if(submission_count > 1){
+        const updated_participant = await TaskParticipant.update({status: "Pending"}, {where: {task_id: task_id, user_id: user_id}, returning: true, plain: true});
+        if(updated_participant){
+          updated_status = updated_participant[1].status
+        }
+      }
+    }
+
+    return {submission: removed_submission, status: updated_status}
+
   } catch (error) {
     return error;
   }
