@@ -37,7 +37,7 @@ const get_task_stats_by_user = async (user_id) => {
   });
 
   const taskCompleted = await TaskParticipant.count({
-    where: { user_id: user_id, status: "Approved" },
+    where: { user_id: user_id, status: "Rewarded" },
   });
 
   const rewardsEarned = await TaskParticipant.findAll({
