@@ -175,8 +175,7 @@ const delete_submission = async (task_id, user_id, submission_id) => {
 
     if(removed_submission){
       const submission_count = await TaskSubmission.count({where: {task_id: task_id, participant_id: user_id}});
-      
-      if(submission_count > 1){
+      if(submission_count < 1){
         const updated_participant = await TaskParticipant.update({status: "Pending"}, {where: {task_id: task_id, user_id: user_id}, returning: true, plain: true});
         if(updated_participant){
           updated_status = updated_participant[1].status
