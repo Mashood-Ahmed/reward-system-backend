@@ -252,7 +252,7 @@ const rewardTask = asyncHandler(async (req, res) => {
     if(transaction_id){
       const data = { status: "Rewarded" };
       try {
-        //const blockchain = await recordPayment("0x1234567890123456789012345678901234567890", task.reward, task_id, transaction_id, user_id);
+        const blockchain = await recordPayment("0x1234567890123456789012345678901234567890", task.reward, task_id, transaction_id, user_id);
 
         const reward = await create_transaction(
           task.reward,
