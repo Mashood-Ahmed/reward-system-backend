@@ -16,7 +16,7 @@ It provides a complete support for a task management social media application:
 - PostgreSQL should be installed and running. You can download it from here.
 - Postman (or any other API Testing application)
 
-#Install dependencies:
+# Install dependencies:
 To install all required dependencies, run:
 ```bash
 npm install
